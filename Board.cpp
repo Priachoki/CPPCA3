@@ -64,4 +64,21 @@ void Board::displayBugs() const {
                   << (crawler->alive ? "Alive" : "Dead") << std::endl;
     }
 }
-
+void Board::findBug(int id) const {
+    bool found = false;
+    for (const auto &crawler : crawlers) {
+        if (crawler->id == id) {
+            std::cout << "Bug found: "
+                      << crawler->id << " Crawler "
+                      << crawler->position << " "
+                      << crawler->size << " "
+                      << toString(crawler->direction) << " "
+                      << (crawler->alive ? "Alive" : "Dead") << std::endl;
+            found = true;
+            break;
+        }
+    }
+    if (!found) {
+        std::cout << "Bug " << id << " not found." << std::endl;
+    }
+}
