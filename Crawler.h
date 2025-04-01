@@ -13,6 +13,10 @@ using namespace std;
 struct Position {
     int x;
     int y;
+    friend std::ostream& operator<<(std::ostream& os, const Position& pos) {
+        os << "(" << pos.x << "," << pos.y << ")";
+        return os;
+    }
 };
 
 

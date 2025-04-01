@@ -6,8 +6,11 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <thread>
+#include <chrono>
 #include <vector>
 #include <random>
+#include <algorithm>
 const int BOARD_SIZE = 10;
 
 Board::Board() {
@@ -50,5 +53,15 @@ void Board::initializeBoard(const std::string &filename) {
     }
     // we then close the file when done.
     infile.close();
+}
+
+void Board::displayBugs() const {
+    for (const auto &crawler : crawlers) {
+        std::cout << crawler->id << " Crawler "
+                  << crawler->position << " "
+                  << crawler->size << " "
+                  << toString(crawler->direction) << " "
+                  << (crawler->alive ? "Alive" : "Dead") << std::endl;
+    }
 }
 
