@@ -6,11 +6,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <thread>
-#include <chrono>
 #include <vector>
 #include <random>
-#include <algorithm>
 const int BOARD_SIZE = 10;
 
 Board::Board() {
@@ -80,5 +77,12 @@ void Board::findBug(int id) const {
     }
     if (!found) {
         std::cout << "Bug " << id << " not found." << std::endl;
+    }
+}
+void Board::tapBoard() {
+    for (auto &crawler : crawlers) {
+        if (crawler->alive) {
+            crawler->move();
+        }
     }
 }
