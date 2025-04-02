@@ -10,37 +10,39 @@
 #include <random>
 const int BOARD_SIZE = 10;
 
+using  namespace std;
+
 Board::Board() {
 
 }
-void Board::initializeBoard(const std::string &filename) {
+void Board::initializeBoard(const string &filename) {
     // here we first open our file
-    std::ifstream infile(filename);
+     ifstream infile(filename);
     if (!infile) {
-        std::cout << "Error opening file: " << filename << std::endl;
+        cout << "Error opening file: " << filename << endl;
         return;
     }
 
-    std::string line;
+    string line;
     // we then read the file one line at a time
-    while (std::getline(infile, line)) {
+    while (getline(infile, line)) {
         if (line.empty()) continue;    // we  skip any empty lines
 
         // we then use a string stream to break the line into parts.
-        std::istringstream iss(line);
-        std::string prt;
-        std::getline(iss, prt, ',');
+        istringstream iss(line);
+        string prt;
+        getline(iss, prt, ',');
         char bugType = prt[0];
-        std::getline(iss, prt, ',');
-        int id = std::stoi(prt);
-        std::getline(iss, prt, ',');
-        int x = std::stoi(prt);
-        std::getline(iss, prt, ',');
-        int y = std::stoi(prt);
-        std::getline(iss, prt, ',');
-        int dirInt = std::stoi(prt);
-        std::getline(iss, prt, ',');
-        int size = std::stoi(prt);
+        getline(iss, prt, ',');
+        int id = stoi(prt);
+        getline(iss, prt, ',');
+        int x = stoi(prt);
+        getline(iss, prt, ',');
+        int y = stoi(prt);
+        getline(iss, prt, ',');
+        int dirInt =stoi(prt);
+        getline(iss, prt, ',');
+        int size = stoi(prt);
         if (bugType == 'C') {
             Position pos { x, y };
             Direction dir = static_cast<Direction>(dirInt);
@@ -54,29 +56,29 @@ void Board::initializeBoard(const std::string &filename) {
 
 void Board::displayBugs() const {
     for (const auto &crawler : crawlers) {
-        std::cout << crawler->id << " Crawler "
+        cout << crawler->id << " Crawler "
                   << crawler->position << " "
                   << crawler->size << " "
                   << toString(crawler->direction) << " "
-                  << (crawler->alive ? "Alive" : "Dead") << std::endl;
+                  << (crawler->alive ? "Alive" : "Dead") << endl;
     }
 }
 void Board::findBug(int id) const {
     bool found = false;
     for (const auto &crawler : crawlers) {
         if (crawler->id == id) {
-            std::cout << "Bug found: "
+            cout << "Bug found: "
                       << crawler->id << " Crawler "
                       << crawler->position << " "
                       << crawler->size << " "
                       << toString(crawler->direction) << " "
-                      << (crawler->alive ? "Alive" : "Dead") << std::endl;
+                      << (crawler->alive ? "Alive" : "Dead") << endl;
             found = true;
             break;
         }
     }
     if (!found) {
-        std::cout << "Bug " << id << " not found." << std::endl;
+      cout << "Bug " << id << " not found." << endl;
     }
 }
 void Board::tapBoard() {
@@ -84,5 +86,18 @@ void Board::tapBoard() {
         if (crawler->alive) {
             crawler->move();
         }
+    }
+}
+// Feature 5: Display Life History of all bugs
+ void Board::displayLifeHistory() const {
+    for (const auto &crawler : crawlers) {
+        cout << crawler->id << " Crawler Path: ";
+        for (auto it = crawler->path.begin(); it != crawler->path.end(); ++it) {
+           cout << *it;
+            if (next(it) != crawler->path.end()) {
+                cout << ", ";
+            }
+        }
+        cout << endl;
     }
 }

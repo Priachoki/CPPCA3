@@ -10,7 +10,8 @@ void displayMenu() {
     cout << "2. Display all Bugs\n";
     cout << "3. Find a Bug (given an id)\n";
     cout << "4. Tap the Bug Board (move bugs)\n";
-    cout << "5. Exit\n";
+    cout << "5. Display Crawler's life History\n";
+    cout << "6. Exit\n";
     cout << "Enter your choice: ";
 }
 
@@ -62,6 +63,14 @@ int main() {
                 break;
             }
             case 5: {
+                if (!boardInitialized) {
+                    cout << "Please initialize the board first (option 1).\n";
+
+                }
+                board.displayLifeHistory();
+                break;
+            }
+            case 6: {
                 cout << "Exiting program.\n";
                 return 0;
             }
