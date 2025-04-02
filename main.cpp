@@ -33,8 +33,11 @@ int main() {
                 cout << "Bug Board initialized from file.\n";
                 break;
             }
-            case 2: {
-
+            case 2: { if (!boardInitialized) {
+                    cout << "Please initialize the Bug Board first (option 1).\n";
+                } else {
+                    board.displayBugs();
+                }
                 break;
             }
             case 3: {
