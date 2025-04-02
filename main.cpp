@@ -1,7 +1,58 @@
 #include <iostream>
-// TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+#include <string>
+#include "Board.h"
+
+using namespace std;
+
+void displayMenu() {
+    cout << "\nMenu Options:\n";
+    cout << "1. Initialize Bug Board (load data from file)\n";
+    cout << "2. Display all Bugs\n";
+    cout << "3. Find a Bug (given an id)\n";
+    cout << "4. Tap the Bug Board (move bugs)\n";
+    cout << "5. Exit\n";
+    cout << "Enter your choice: ";
+}
+
 int main() {
+    Board board;
+    bool boardInitialized = false;
+    int choice;
+
+    while(true) {
+        displayMenu();
+        cin >> choice;
+        cin.ignore();
+        switch (choice) {
+            case 1: {
+                string filename;
+                cout << "Enter filename (e.g., crawlerbugs.txt): ";
+                getline(cin, filename);
+                board.initializeBoard(filename);
+                boardInitialized = true;
+                cout << "Bug Board initialized from file.\n";
+                break;
+            }
+            case 2: {
+
+                break;
+            }
+            case 3: {
+
+                break;
+            }
+            case 4: {
+
+                break;
+            }
+            case 5: {
+                cout << "Exiting program.\n";
+                return 0;
+            }
+            default:
+                cout << "Invalid choice. Please try again.\n";
+        }
+    }
 
     return 0;
 }
