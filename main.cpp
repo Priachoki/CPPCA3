@@ -53,7 +53,12 @@ int main() {
                 break;
             }
             case 4: {
-
+                if (!boardInitialized) {
+                    cout << "Please initialize the Bug Board first (option 1).\n";
+                } else {
+                    board.tapBoard();
+                    cout << "Board tapped. Bugs have moved.\n";
+                }
                 break;
             }
             case 5: {
