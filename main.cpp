@@ -41,7 +41,15 @@ int main() {
                 break;
             }
             case 3: {
-
+                if (!boardInitialized) {
+                    cout << "Please initialize the Bug Board first (option 1).\n";
+                } else {
+                    int id;
+                    cout << "Enter Bug ID to find: ";
+                    cin >> id;
+                    cin.ignore();
+                    board.findBug(id);
+                }
                 break;
             }
             case 4: {
