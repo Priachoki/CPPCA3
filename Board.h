@@ -18,7 +18,7 @@ public:
     void findBug(int id) const;
     void tapBoard();
 
-    [[maybe_unused]] void displayLifeHistory() const;
+   void displayLifeHistory() const;
     void displayCells() const;
     void tapBoardFight();
     void runSimulation();
