@@ -25,6 +25,7 @@ public:
 
 private:
     std::vector<Crawler*> crawlers;
+    void handleCollisions();
 };
 
 
