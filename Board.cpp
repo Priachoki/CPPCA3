@@ -102,40 +102,40 @@ void Board::displayLifeHistory() const {
 }
 
 void Board::handleCollisions() {
-    // Create a map that uses a pair (x, y) as a key and a vector of Crawler* as its value.
+
     std::map<std::pair<int, int>, std::vector<Crawler*>> grid;
 
-    // Place each alive crawler into the appropriate cell in the map.
+
     for (auto crawler : crawlers) {
         if (crawler->alive) {
             int x = crawler->position.x;
             int y = crawler->position.y;
             if (x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE) {
-                // The key is a pair (x, y) indicating the cell coordinates.
+
                 grid[{x, y}].push_back(crawler);
             }
         }
     }
 
-    // Iterate over each cell in the map.
+
     for (auto& cellEntry : grid) {
         std::vector<Crawler*>& cellCrawlers = cellEntry.second;
         if (cellCrawlers.size() > 1) {
-            // Determine the maximum size among bugs in this cell.
+
             int maxSize = -1;
             for (auto crawler : cellCrawlers) {
                 if (crawler->size > maxSize) {
                     maxSize = crawler->size;
                 }
             }
-            // Collect all bugs with the maximum size.
+
             std::vector<Crawler*> winners;
             for (auto crawler : cellCrawlers) {
                 if (crawler->size == maxSize) {
                     winners.push_back(crawler);
                 }
             }
-            // Choose one winner randomly if there's a tie.
+
             Crawler* winner = nullptr;
             if (winners.size() > 1) {
                 std::random_device rd;
@@ -145,7 +145,7 @@ void Board::handleCollisions() {
             } else {
                 winner = winners.front();
             }
-            // The winner eats all other bugs: grows in size and marks losers as dead.
+
             for (auto crawler : cellCrawlers) {
                 if (crawler != winner) {
                     winner->size += crawler->size;
@@ -165,11 +165,10 @@ void Board::tapBoardFight() {
 }
 
 void Board::displayCells() const {
-    // Create a map where the key is a pair (x, y) representing cell coordinates,
-    // and the value is a vector of pointers to Crawler objects in that cell.
+
     std::map<std::pair<int, int>, std::vector<Crawler*>> grid;
 
-    // Place each alive crawler into the appropriate cell in the map.
+
     for (auto crawler : crawlers) {
         if (crawler->alive) {
             int x = crawler->position.x;
@@ -180,17 +179,17 @@ void Board::displayCells() const {
         }
     }
 
-    // Iterate over every cell in our fixed board (0,0) to (BOARD_SIZE-1, BOARD_SIZE-1).
-    for (int i = 0; i < BOARD_SIZE; ++i) {         // i represents the y-coordinate (row)
-        for (int j = 0; j < BOARD_SIZE; ++j) {     // j represents the x-coordinate (column)
+
+    for (int i = 0; i < BOARD_SIZE; ++i) {
+        for (int j = 0; j < BOARD_SIZE; ++j) {
             std::cout << "(" << j << "," << i << "): ";
             std::pair<int, int> key = {j, i};
-            // Check if there is an entry in the map for this cell.
+
             if (grid.find(key) == grid.end() || grid.at(key).empty()) {
                 std::cout << "empty";
             } else {
                 bool first = true;
-                // Print each bug in the cell.
+
                 for (auto crawler : grid.at(key)) {
                     if (!first) {
                         std::cout << ", ";
