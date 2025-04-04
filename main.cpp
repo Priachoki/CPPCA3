@@ -11,7 +11,8 @@ void displayMenu() {
     cout << "3. Find a Bug (given an id)\n";
     cout << "4. Tap the Bug Board (move bugs)\n";
     cout << "5. Display Crawler's life History\n";
-    cout << "6. Exit\n";
+    cout<<  "6. Display Cells\n";
+    cout << "7. Exit\n";
     cout << "Enter your choice: ";
 }
 
@@ -70,6 +71,13 @@ int main() {
                 break;
             }
             case 6: {
+                if (!boardInitialized) {
+                    cout << "Please initialize the board first (option 1).\n";
+                }
+                board.tapBoardFight();
+            }
+
+            case 7: {
                 cout << "Exiting program.\n";
                 return 0;
             }
