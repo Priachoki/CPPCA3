@@ -65,7 +65,6 @@ int main() {
             case 5: {
                 if (!boardInitialized) {
                     cout << "Please initialize the board first (option 1).\n";
-
                 }
                 board.displayLifeHistory();
                 break;
