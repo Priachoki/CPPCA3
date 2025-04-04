@@ -25,7 +25,7 @@ int main() {
     while (true) {
         displayMenu();
         cin >> choice;
-        cin.ignore();  // Clear the newline from the input buffer
+        cin.ignore();
 
         if (choice == 1) {
             string filename;
