@@ -88,7 +88,18 @@ void Board::tapBoard() {
         }
     }
 }
-
+void Board::displayLifeHistory() const {
+    for (const auto &crawler: crawlers) {
+        cout << crawler->id << " Crawler Path: ";
+        for (auto it = crawler->path.begin(); it != crawler->path.end(); ++it) {
+            cout << *it;
+            if (next(it) != crawler->path.end()) {
+                cout << ", ";
+            }
+        }
+        cout << endl;
+    }
+}
 
 void Board::handleCollisions() {
     // Create a map that uses a pair (x, y) as a key and a vector of Crawler* as its value.
