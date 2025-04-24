@@ -8,36 +8,13 @@
 #ifndef CRAWLER_H
 #define CRAWLER_H
 
+#include "Bug.h"
 using namespace std;
 
-struct Position {
-    int x;
-    int y;
-    friend std::ostream& operator<<(std::ostream& os, const Position& pos) {
-        os << "(" << pos.x << "," << pos.y << ")";
-        return os;
-    }
-};
-
-
-class Crawler {
+class Crawler : public Bug{
 public:
-
     Crawler(int id, Position pos, Direction dir, int size);
-
-
-    int id;
-    Position position;
-    Direction direction;
-    int size;
-    bool alive;
-    std::list<Position> path;
-
-    void move();
-    bool isWayBlocked() const;
-private:
-
-    Direction getRandomDirection() const;
+    void move() override;
 };
 
 #endif //CRAWLER_H
