@@ -9,91 +9,120 @@
 #include <vector>
 #include <random>
 #include <map>
-#include <utility>  // For std::pair
+#include <utility>  // For pair
+#include <thread>
+#include <chrono>
+#include "Hopper.h"
+
+
+using namespace std;
+
 const int BOARD_SIZE = 10;
 
 Board::Board() {
 
 }
-void Board::initializeBoard(const std::string &filename) {
+void Board::initializeBoard(const string &filename) {
     // here we first open our file
-    std::ifstream infile(filename);
+    ifstream infile(filename);
     if (!infile) {
-        std::cout << "Error opening file: " << filename << std::endl;
+        cout << "Error opening file: " << filename << endl;
         return;
     }
 
-    std::string line;
+    string line;
     // we then read the file one line at a time
-    while (std::getline(infile, line)) {
+    while (getline(infile, line)) {
         if (line.empty()) continue;    // we  skip any empty lines
 
         // we then use a string stream to break the line into parts.
-        std::istringstream iss(line);
-        std::string prt;
-        std::getline(iss, prt, ',');
+        istringstream iss(line);
+        string prt;
+        getline(iss, prt, ',');
         char bugType = prt[0];
-        std::getline(iss, prt, ',');
-        int id = std::stoi(prt);
-        std::getline(iss, prt, ',');
-        int x = std::stoi(prt);
-        std::getline(iss, prt, ',');
-        int y = std::stoi(prt);
-        std::getline(iss, prt, ',');
-        int dirInt = std::stoi(prt);
-        std::getline(iss, prt, ',');
-        int size = std::stoi(prt);
+        getline(iss, prt, ',');
+        int id = stoi(prt);
+        getline(iss, prt, ',');
+        int x = stoi(prt);
+        getline(iss, prt, ',');
+        int y = stoi(prt);
+        getline(iss, prt, ',');
+        int dirInt = stoi(prt);
+        getline(iss, prt, ',');
+        int size = stoi(prt);
         if (bugType == 'C') {
             Position pos { x, y };
             Direction dir = static_cast<Direction>(dirInt);
-            Crawler* crawler = new Crawler(id, pos, dir, size);
-            crawlers.push_back(crawler);
+            Bug* crawler = new Crawler(id, pos, dir, size);
+            bugs.push_back(crawler);
+        }else if(bugType == 'H'){
+            getline(iss, prt, ',');
+            int hopLength = stoi(prt);
+            Position pos {x, y};
+            Direction dir = static_cast<Direction>(dirInt);
+            Bug* hopper = new Hopper(id, pos, dir, size, hopLength);
+            bugs.push_back(hopper);
         }
     }
     // we then close the file when done.
     infile.close();
 }
-
-void Board::displayBugs() const {
-    for (const auto &crawler : crawlers) {
-        std::cout << crawler->id << " Crawler "
-                  << crawler->position << " "
-                  << crawler->size << " "
-                  << toString(crawler->direction) << " "
-                  << (crawler->alive ? "Alive" : "Dead") << std::endl;
+//Feature 2. Display All Bugs
+void Board::displayBugs() const{
+    for(const auto &bug : bugs){
+        if(auto hopper = dynamic_cast<Hopper*>(bug)){
+            cout<< hopper ->id << "Hopper"
+                <<hopper->position<< " "
+                <<hopper->size<< " "
+                << toString(hopper->direction) << " "
+                << hopper->getHopLength() << " "
+                << (hopper->alive ? "Alive" : "Dead") << endl;
+        }else {
+            cout << bug->id << "Crawler"
+                 <<bug->position << " "
+                 <<bug->size << " "
+                 << toString(bug->direction)<< " "
+                 <<(bug->alive ? "Alive" : "Dead") << endl;
+        }
     }
 }
+
+//Feature 3. Find a bug
 void Board::findBug(int id) const {
     bool found = false;
-    for (const auto &crawler : crawlers) {
-        if (crawler->id == id) {
-            std::cout << "Bug found: "
-                      << crawler->id << " Crawler "
-                      << crawler->position << " "
-                      << crawler->size << " "
-                      << toString(crawler->direction) << " "
-                      << (crawler->alive ? "Alive" : "Dead") << std::endl;
+    for (const auto &bug : bugs) {
+        if (bug->id == id) {
+            cout << "Bug found: "
+                      << bug->id << " Bug  "
+                      << bug->position << " "
+                      << bug->size << " "
+                      << toString(bug->direction) << " "
+                      << (bug->alive ? "Alive" : "Dead") << endl;
             found = true;
             break;
         }
     }
     if (!found) {
-        std::cout << "Bug " << id << " not found." << std::endl;
+        cout << "Bug " << id << " not found." << endl;
     }
 }
+
+//Feature 4. Tap the bub board
 void Board::tapBoard() {
-    for (auto &crawler : crawlers) {
-        if (crawler->alive) {
-            crawler->move();
+    for (auto &bug : bugs) {
+        if (bug->alive) {
+            bug->move();
         }
     }
 }
+
+//feature 5. Display Life history if all bugs
 void Board::displayLifeHistory() const {
-    for (const auto &crawler: crawlers) {
-        cout << crawler->id << " Crawler Path: ";
-        for (auto it = crawler->path.begin(); it != crawler->path.end(); ++it) {
+    for (const auto &bug: bugs) {
+        cout << bug->id << " Bug Path: ";
+        for (auto it = bug->path.begin(); it != bug->path.end(); ++it) {
             cout << *it;
-            if (next(it) != crawler->path.end()) {
+            if (next(it) != bug->path.end()) {
                 cout << ", ";
             }
         }
@@ -101,42 +130,38 @@ void Board::displayLifeHistory() const {
     }
 }
 
+//feature 8
 void Board::handleCollisions() {
+    std::map<std::pair<int, int>, std::vector<Bug*>> grid;
 
-    std::map<std::pair<int, int>, std::vector<Crawler*>> grid;
-
-
-    for (auto crawler : crawlers) {
-        if (crawler->alive) {
-            int x = crawler->position.x;
-            int y = crawler->position.y;
+    for (auto bug : bugs) {
+        if (bug->alive) {
+            int x = bug->position.x;
+            int y = bug->position.y;
             if (x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE) {
-
-                grid[{x, y}].push_back(crawler);
+                grid[{x, y}].push_back(bug);
             }
         }
     }
 
-
     for (auto& cellEntry : grid) {
-        std::vector<Crawler*>& cellCrawlers = cellEntry.second;
-        if (cellCrawlers.size() > 1) {
-
+        std::vector<Bug*>& cellBugs = cellEntry.second;
+        if (cellBugs.size() > 1) {
             int maxSize = -1;
-            for (auto crawler : cellCrawlers) {
-                if (crawler->size > maxSize) {
-                    maxSize = crawler->size;
+            for (auto bug : cellBugs) {
+                if (bug->size > maxSize) {
+                    maxSize = bug->size;
                 }
             }
 
-            std::vector<Crawler*> winners;
-            for (auto crawler : cellCrawlers) {
-                if (crawler->size == maxSize) {
-                    winners.push_back(crawler);
+            std::vector<Bug*> winners;
+            for (auto bug : cellBugs) {
+                if (bug->size == maxSize) {
+                    winners.push_back(bug);
                 }
             }
 
-            Crawler* winner = nullptr;
+            Bug* winner = nullptr;
             if (winners.size() > 1) {
                 std::random_device rd;
                 std::mt19937 gen(rd());
@@ -146,59 +171,83 @@ void Board::handleCollisions() {
                 winner = winners.front();
             }
 
-            for (auto crawler : cellCrawlers) {
-                if (crawler != winner) {
-                    winner->size += crawler->size;
-                    crawler->alive = false;
+            for (auto bug : cellBugs) {
+                if (bug != winner) {
+                    winner->size += bug->size;
+                    bug->alive = false;
                 }
             }
+            cout << "Bug "<<winner->id<< " won the fight and ate:";
+            for(auto bug : cellBugs){
+                if(bug != winner){
+                    cout << " Bug "<<bug->id;
+                }
+            }
+            cout<<endl;
         }
     }
 }
 void Board::tapBoardFight() {
-    for (auto &crawler : crawlers) {
-        if (crawler->alive) {
-            crawler->move();
+    for (auto &bug : bugs) {
+        if (bug->alive) {
+            bug->move();
         }
     }
     handleCollisions();
 }
 
+//Feature 7. Display all cells
 void Board::displayCells() const {
 
-    std::map<std::pair<int, int>, std::vector<Crawler*>> grid;
+    map<pair<int, int>, vector<Bug*>> grid;
 
 
-    for (auto crawler : crawlers) {
-        if (crawler->alive) {
-            int x = crawler->position.x;
-            int y = crawler->position.y;
-            if (x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE) {
-                grid[{x, y}].push_back(crawler);
-            }
+    for (auto bug : bugs) {
+        if (bug->alive) {
+            grid[{bug->position.x, bug->position.y}].push_back(bug);
         }
     }
 
 
-    for (int i = 0; i < BOARD_SIZE; ++i) {
-        for (int j = 0; j < BOARD_SIZE; ++j) {
-            std::cout << "(" << j << "," << i << "): ";
-            std::pair<int, int> key = {j, i};
+    for (int i = 0; i < BOARD_SIZE; ++i) { //i represents rows
+        for (int j = 0; j < BOARD_SIZE; ++j) { //j represents columns
+            cout << "(" << j << "," << i << "): ";
+            pair<int, int> key = {j, i};
 
-            if (grid.find(key) == grid.end() || grid.at(key).empty()) {
-                std::cout << "empty";
+            if (grid.find(key) == grid.end()) {
+                cout << "empty";
             } else {
                 bool first = true;
 
-                for (auto crawler : grid.at(key)) {
+                for (auto bug : grid.at(key)) {
                     if (!first) {
-                        std::cout << ", ";
+                        cout << ", ";
                     }
-                    std::cout << "Crawler " << crawler->id;
+                    if(dynamic_cast<Hopper*>(bug)){
+                    cout << "Hopper " << bug->id;
+                    }else {
+                        cout << "Crawler "<< bug->id;
+                    }
                     first = false;
                 }
             }
-            std::cout << std::endl;
+            cout << endl;
         }
     }
 }
+Board::~Board(){
+    for(auto bug : bugs){
+        delete bug;
+    }
+}
+
+list<Position> Board::getBugPathById(int id) const{
+    for(auto bug : bugs){
+        if(bug->id == id){
+            return bug->path;
+        }
+    }
+    return {};
+}
+
+

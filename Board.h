@@ -7,25 +7,33 @@
 #include <vector>
 #include <string>
 #include "Crawler.h"
+#include "Bug.h"
+#include "Hopper.h"
 
+
+using namespace std;
 
 class Board {
 public:
     Board();
+    ~Board();
 
-    void initializeBoard(const std::string &filename);
+    void initializeBoard(const string &filename);
     void displayBugs() const;
     void findBug(int id) const;
     void tapBoard();
 
-   void displayLifeHistory() const;
+    void displayLifeHistory() const;
     void displayCells() const;
     void tapBoardFight();
     void runSimulation();
 
+    list<Position> getBugPathById(int id) const;
+
+
 
 private:
-    std::vector<Crawler*> crawlers;
+    vector<Bug*> bugs;
     void handleCollisions();
 };
 
