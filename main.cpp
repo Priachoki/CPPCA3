@@ -1,4 +1,6 @@
 #include <iostream>
+#include <fstream>
+#include <ctime>
 #include <string>
 #include "Board.h"
 
@@ -77,6 +79,28 @@ int main() {
                 board.displayCells();
             }
         } else if (choice == 8) {
+            //Feature 6 - Write the life history of all bugs to a text file called “bugs_life_history_date_time.out”
+            //write bug timestamped file
+            time_t now = time(nullptr);
+            char filename[100];
+            strftime(filename, sizeof(filename), "bugs_life_history_%Y-%m-%d_%H-%M-%S.out", localtime(&now));
+
+            ofstream outfile(filename);
+            if(!outfile){
+                cerr << "Error writing file: "<< filename << endl;
+                return 1;
+            }
+            //life history of all the bugs displayed in the file
+            for(const BugInfo& bug : board.getBugSnapShots()){
+                outfile << bug.id << " "<< bug.type << " Path: ";
+                list<Position> path = board.getBugPathById(bug.id);
+                for (auto i = path.begin(); i != path.end(); ++i){
+                    outfile << *i;
+                    if(next(i) != path.end()) outfile << ",";
+                }
+                outfile << " "<< (bug.alive ? "Alive!" : "Dead") << endl;
+            }
+            cout << "Bug life history saved to file: " << filename << endl;
             cout << "Exiting program.\n";
             return 0;
         } else {

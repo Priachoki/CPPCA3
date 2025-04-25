@@ -152,6 +152,30 @@ Board.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\CPPCA3.dir\build.make CMakeFiles/CPPCA3.dir/Board.cpp.s
 .PHONY : Board.cpp.s
 
+Bug.obj: Bug.cpp.obj
+.PHONY : Bug.obj
+
+# target to build an object file
+Bug.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\CPPCA3.dir\build.make CMakeFiles/CPPCA3.dir/Bug.cpp.obj
+.PHONY : Bug.cpp.obj
+
+Bug.i: Bug.cpp.i
+.PHONY : Bug.i
+
+# target to preprocess a source file
+Bug.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\CPPCA3.dir\build.make CMakeFiles/CPPCA3.dir/Bug.cpp.i
+.PHONY : Bug.cpp.i
+
+Bug.s: Bug.cpp.s
+.PHONY : Bug.s
+
+# target to generate assembly for a file
+Bug.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\CPPCA3.dir\build.make CMakeFiles/CPPCA3.dir/Bug.cpp.s
+.PHONY : Bug.cpp.s
+
 Crawler.obj: Crawler.cpp.obj
 .PHONY : Crawler.obj
 
@@ -175,6 +199,30 @@ Crawler.s: Crawler.cpp.s
 Crawler.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\CPPCA3.dir\build.make CMakeFiles/CPPCA3.dir/Crawler.cpp.s
 .PHONY : Crawler.cpp.s
+
+Hopper.obj: Hopper.cpp.obj
+.PHONY : Hopper.obj
+
+# target to build an object file
+Hopper.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\CPPCA3.dir\build.make CMakeFiles/CPPCA3.dir/Hopper.cpp.obj
+.PHONY : Hopper.cpp.obj
+
+Hopper.i: Hopper.cpp.i
+.PHONY : Hopper.i
+
+# target to preprocess a source file
+Hopper.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\CPPCA3.dir\build.make CMakeFiles/CPPCA3.dir/Hopper.cpp.i
+.PHONY : Hopper.cpp.i
+
+Hopper.s: Hopper.cpp.s
+.PHONY : Hopper.s
+
+# target to generate assembly for a file
+Hopper.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\CPPCA3.dir\build.make CMakeFiles/CPPCA3.dir/Hopper.cpp.s
+.PHONY : Hopper.cpp.s
 
 main.obj: main.cpp.obj
 .PHONY : main.obj
@@ -212,9 +260,15 @@ help:
 	@echo ... Board.obj
 	@echo ... Board.i
 	@echo ... Board.s
+	@echo ... Bug.obj
+	@echo ... Bug.i
+	@echo ... Bug.s
 	@echo ... Crawler.obj
 	@echo ... Crawler.i
 	@echo ... Crawler.s
+	@echo ... Hopper.obj
+	@echo ... Hopper.i
+	@echo ... Hopper.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s

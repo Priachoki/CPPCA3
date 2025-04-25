@@ -9,6 +9,7 @@
 #include "Crawler.h"
 #include "Bug.h"
 #include "Hopper.h"
+#include "BugInfo.h"
 
 
 using namespace std;
@@ -28,6 +29,7 @@ public:
     void tapBoardFight();
     void runSimulation();
 
+    vector<BugInfo> getBugSnapShots() const;
     list<Position> getBugPathById(int id) const;
 
 
