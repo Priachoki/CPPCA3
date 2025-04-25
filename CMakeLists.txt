@@ -7,4 +7,9 @@ add_executable(CPPCA3 main.cpp
         Crawler.cpp
         Crawler.h
         Board.cpp
-        Board.h)
+        Board.h
+        Bug.h
+        Bug.cpp
+        Hopper.h
+        Hopper.cpp
+)

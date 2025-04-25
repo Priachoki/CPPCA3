@@ -241,6 +241,29 @@ Board::~Board(){
     }
 }
 
+vector<BugInfo> Board::getBugSnapShots() const {
+    vector<BugInfo> snapshot;
+    for (auto bug : bugs) {
+        BugInfo bugInfo;
+        bugInfo.id = bug->id;
+        bugInfo.position = bug->position;
+        bugInfo.direction = bug->direction;
+        bugInfo.size = bug->size;
+        bugInfo.alive = bug->alive;
+
+        //show type of bug
+        if(auto hopper = dynamic_cast<Hopper*>(bug)){
+            bugInfo.type = "Hopper";
+            bugInfo.hopLength = hopper->getHopLength();
+        } else{
+            bugInfo.type = "Crawler";
+        }
+
+        snapshot.push_back(bugInfo);
+    }
+    return snapshot;
+}
+
 list<Position> Board::getBugPathById(int id) const{
     for(auto bug : bugs){
         if(bug->id == id){
