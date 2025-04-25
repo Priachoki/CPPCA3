@@ -16,6 +16,7 @@ void displayMenu() {
     cout << "6. Display Crawler's Life History\n";
     cout << "7. Display All Cells\n";
     cout << "8. Exit\n";
+    cout << "9. Run Simulation (auto fight every second)\n";
     cout << "Enter your choice: ";
 }
 
@@ -77,6 +78,12 @@ int main() {
                 cout << "Please initialize the Bug Board first (option 1).\n";
             } else {
                 board.displayCells();
+            }
+        }else if(choice ==9){
+            if(!boardInitialized){
+                cout<<"Please initialize the Bug Board first (option 1).\n";
+            }else{
+                board.runSimulation();
             }
         } else if (choice == 8) {
             //Feature 6 - Write the life history of all bugs to a text file called “bugs_life_history_date_time.out”
