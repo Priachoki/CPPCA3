@@ -273,4 +273,30 @@ list<Position> Board::getBugPathById(int id) const{
     return {};
 }
 
+void Board::runSimulation(){
+    cout <<"Starting simulation.....\n";
 
+    while (true){
+        tapBoardFight();
+//        displayCells();
+
+        //wait for a second before the next tap
+        this_thread::sleep_for(chrono::seconds(1));
+
+        int aliveCount = 0;
+        Bug* lastAlive = nullptr;
+        for(auto bug : bugs){
+            if(bug->alive){
+                aliveCount++;
+                lastAlive = bug;
+            }
+        }
+        if(aliveCount <= 1){
+            if(lastAlive){
+                cout<<"Bug "<<lastAlive->id<<"is the last Bug standing!!!!" <<endl;
+            }else{
+                cout<<"All bugs are dead. None survived!"<<endl;
+            }break;
+        }
+    }
+}
