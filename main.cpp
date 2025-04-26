@@ -36,6 +36,7 @@ int main() {
             cout << "Enter filename (e.g., crawlerbugs.txt): ";
             getline(cin, filename);
             board.initializeBoard(filename);
+            board.createSuperBug();
             boardInitialized = true;
             cout << "Bug Board initialized from file.\n";
         } else if (choice == 2) {

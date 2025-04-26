@@ -1,4 +1,6 @@
-//
+
+
+ //
 // Created by MyPC on 31/03/2025.
 //
 
@@ -10,6 +12,7 @@
 #include "Bug.h"
 #include "Hopper.h"
 #include "BugInfo.h"
+#include "SuperBug.h"
 
 
 using namespace std;
@@ -30,6 +33,8 @@ public:
     void runSimulation();
     void displaySFML();
     void moveSelectedBug(Direction dir);
+    void moveSuperBug(Direction dir);
+    void createSuperBug();
 
 
 
@@ -41,6 +46,7 @@ public:
 private:
     vector<Bug*> bugs;
     void handleCollisions();
+    SuperBug* superBug = nullptr;
 };
 
 

@@ -9,6 +9,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/CPPCA3.dir/Hopper.cpp.obj.d"
   "CMakeFiles/CPPCA3.dir/SpiralBug.cpp.obj"
   "CMakeFiles/CPPCA3.dir/SpiralBug.cpp.obj.d"
+  "CMakeFiles/CPPCA3.dir/SuperBug.cpp.obj"
+  "CMakeFiles/CPPCA3.dir/SuperBug.cpp.obj.d"
   "CMakeFiles/CPPCA3.dir/main.cpp.obj"
   "CMakeFiles/CPPCA3.dir/main.cpp.obj.d"
   "CPPCA3.exe"

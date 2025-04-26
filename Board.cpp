@@ -1,3 +1,4 @@
+
 //
 // Created by MyPC on 31/03/2025.
 //
@@ -15,6 +16,7 @@
 #include "Hopper.h"
 #include "SpiralBug.h"
 #include <SFML/Graphics.hpp>
+#include "SuperBug.h"
 
 
 
@@ -326,7 +328,7 @@ void Board::displaySFML() {
     sf::RenderWindow window(sf::VideoMode(boardSize * cellSize, boardSize * cellSize), "Bug Board");
 
     //Load the images
-    sf::Texture crawlerTexture, hopperTexture, spiralTexture;
+    sf::Texture crawlerTexture, hopperTexture, spiralTexture, superTexture;
     if(!crawlerTexture.loadFromFile("assets/crawler.jpeg")){
         cerr<< "Failed to load the crawler.jpeg file\n";
     }
@@ -335,6 +337,9 @@ void Board::displaySFML() {
     }
     if(!spiralTexture.loadFromFile("assets/spiral.jpeg")){
         cerr<< "Failed to load the spiral.jpeg file\n";
+    }
+    if (!superTexture.loadFromFile("assets/SuperBug.jpeg")) {
+        cerr << "Failed to load SuperBug.jpeg file\n";
     }
 
     while (window.isOpen()) {
@@ -347,6 +352,14 @@ void Board::displaySFML() {
             if (event.type == sf::Event::KeyPressed) {
                 if (event.key.code == sf::Keyboard::Space) {
                     tapBoardFight();
+                }else if (event.key.code == sf::Keyboard::Up) {
+                    moveSuperBug(Direction::North);
+                } else if (event.key.code == sf::Keyboard::Down) {
+                    moveSuperBug(Direction::South);
+                } else if (event.key.code == sf::Keyboard::Left) {
+                    moveSuperBug(Direction::West);
+                } else if (event.key.code == sf::Keyboard::Right) {
+                    moveSuperBug(Direction::East);
                 }
         }
     }
@@ -386,6 +399,16 @@ void Board::displaySFML() {
             sprite.setPosition(bug->position.x * cellSize, bug->position.y * cellSize);
             window.draw(sprite);
         }
+        if (superBug && superBug->alive) {
+            sf::Sprite sprite;
+            sprite.setTexture(superTexture);
+            sprite.setScale(
+                    (cellSize - cellGap) / sprite.getLocalBounds().width,
+                    (cellSize - cellGap) / sprite.getLocalBounds().height
+            );
+            sprite.setPosition(superBug->position.x * cellSize, superBug->position.y * cellSize);
+            window.draw(sprite);
+        }
 
         window.display();
     }
@@ -397,6 +420,30 @@ void Board::moveSelectedBug(Direction dir) {
             bug->direction = dir;
             bug->move();
             break;
+        }
+    }
+}
+void Board::createSuperBug() {
+    Position startPos{0, 0}; // Start SuperBug at top-left
+    superBug = new SuperBug(999, startPos, Direction::East, 10); // ID = 999
+}
+
+void Board::moveSuperBug(Direction dir) {
+    if (superBug && superBug->alive) {
+        superBug->move(dir);
+
+        for(auto& bug : bugs){
+            if (bug->alive && bug->position.x == superBug->position.x && bug->position.y == superBug->position.y) {
+                if (superBug->size > bug->size) {
+                    superBug->size += bug->size;
+                    bug->alive = false;
+                    cout << "SuperBug ate bug " << bug->id << "!\n";
+                } else {
+                    superBug->alive = false;
+                    cout << "SuperBug was defeated by bug " << bug->id << "!\n";
+                }
+                break;
+            }
         }
     }
 }

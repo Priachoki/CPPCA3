@@ -18,6 +18,9 @@ struct Position{
         os << "(" <<pos.x << "," << pos.y << ")";
         return os;
     }
+    bool operator==(const Position& other) const {
+        return x == other.x && y == other.y;
+    }
 };
 class Bug {
 public:
@@ -44,4 +47,3 @@ protected:
 
 
 #endif //CPPCA3_BUG_H
-

@@ -14,6 +14,8 @@ add_executable(CPPCA3 main.cpp
         Hopper.cpp
         SpiralBug.h
         SpiralBug.cpp
+        SuperBug.cpp
+        SuperBug.h
 )
 
 set(SFML_STATIC_LIBRARIES TRUE)
