@@ -346,7 +346,7 @@ void Board::displaySFML() {
 
             if (event.type == sf::Event::KeyPressed) {
                 if (event.key.code == sf::Keyboard::Space) {
-                    tapBoard();
+                    tapBoardFight();
                 }
         }
     }
