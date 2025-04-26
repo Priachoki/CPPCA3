@@ -28,6 +28,8 @@ public:
     void displayCells() const;
     void tapBoardFight();
     void runSimulation();
+    void displaySFML();
+
 
     vector<BugInfo> getBugSnapShots() const;
     list<Position> getBugPathById(int id) const;

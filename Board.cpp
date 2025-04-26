@@ -14,6 +14,8 @@
 #include <chrono>
 #include "Hopper.h"
 #include "SpiralBug.h"
+#include <SFML/Graphics.hpp>
+
 
 
 using namespace std;
@@ -312,5 +314,37 @@ void Board::runSimulation(){
                 cout<<"All bugs are dead. None survived!"<<endl;
             }break;
         }
+    }
+}
+
+//Display the SFML
+void Board::displaySFML() {
+    const int boardSize = 10;
+    const int cellSize = 80;
+    const int cellGap = 4;
+
+    sf::RenderWindow window(sf::VideoMode(boardSize * cellSize, boardSize * cellSize), "Bug Board");
+
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+
+        window.clear(sf::Color::White);
+
+        for (int i = 0; i < boardSize; ++i) {
+            for (int j = 0; j < boardSize; ++j) {
+                sf::RectangleShape cell(sf::Vector2f(cellSize - cellGap, cellSize - cellGap));
+                cell.setPosition(j * cellSize, i * cellSize);
+                cell.setFillColor(sf::Color(200, 200, 200));
+                cell.setOutlineColor(sf::Color::Black);
+                cell.setOutlineThickness(2);
+                window.draw(cell);
+            }
+        }
+
+        window.display();
     }
 }

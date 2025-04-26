@@ -17,6 +17,7 @@ void displayMenu() {
     cout << "7. Display All Cells\n";
     cout << "8. Exit\n";
     cout << "9. Run Simulation (auto fight every second)\n";
+    cout << "10. Display SFML Board\n";
     cout << "Enter your choice: ";
 }
 
@@ -85,7 +86,13 @@ int main() {
             }else{
                 board.runSimulation();
             }
-        } else if (choice == 8) {
+        } else if (choice == 10) {
+            if (!boardInitialized) {
+                cout << "Please initialize the Bug Board first (option 1).\n";
+            } else {
+                board.displaySFML();
+            }
+        }else if (choice == 8) {
             //Feature 6 - Write the life history of all bugs to a text file called “bugs_life_history_date_time.out”
             //write bug timestamped file
             time_t now = time(nullptr);

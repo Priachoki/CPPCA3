@@ -248,6 +248,12 @@ CPPCA3_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 CPPCA3_SOURCE_DIR:STATIC=C:/Users/priya/OneDrive - Dundalk Institute of Technology/Year Two/C++/CPPCA3
 
+//Path to a library.
+FreeType_LIB:FILEPATH=C:/SFML-2.6.2/lib/libfreetype.a
+
+//Path to a file.
+SFML_DOC_DIR:PATH=SFML_DOC_DIR-NOTFOUND
+
 
 ########################
 # INTERNAL cache entries
@@ -407,6 +413,8 @@ CMAKE_STRIP-ADVANCED:INTERNAL=1
 CMAKE_TAPI-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: FreeType_LIB
+FreeType_LIB-ADVANCED:INTERNAL=1
 //linker supports push/pop state
 _CMAKE_LINKER_PUSHPOP_STATE_SUPPORTED:INTERNAL=TRUE
 
