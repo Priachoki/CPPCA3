@@ -26,7 +26,7 @@ SpiralBug::SpiralBug(int id, Position position, Direction dir, int size)
     stepsInCurrentDirection++;
 
     if(stepsInCurrentDirection == maxSteps){
-        directionIndex = (directionIndex =1) % 4;
+        directionIndex = (directionIndex +1) % 4;
         stepsInCurrentDirection = 0;
 
         if(directionIndex % 2 == 0){

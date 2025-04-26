@@ -325,12 +325,32 @@ void Board::displaySFML() {
 
     sf::RenderWindow window(sf::VideoMode(boardSize * cellSize, boardSize * cellSize), "Bug Board");
 
+    //Load the images
+    sf::Texture crawlerTexture, hopperTexture, spiralTexture;
+    if(!crawlerTexture.loadFromFile("assets/crawler.jpeg")){
+        cerr<< "Failed to load the crawler.jpeg file\n";
+    }
+    if(!hopperTexture.loadFromFile("assets/Hopper.jpeg")){
+        cerr<< "Failed to load the Hopper.jpeg file\n";
+    }
+    if(!spiralTexture.loadFromFile("assets/spiral.jpeg")){
+        cerr<< "Failed to load the spiral.jpeg file\n";
+    }
+
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
+
+
+            if (event.type == sf::Event::KeyPressed) {
+                if (event.key.code == sf::Keyboard::Space) {
+                    tapBoard();
+                }
         }
+    }
+
 
         window.clear(sf::Color::White);
 
@@ -345,6 +365,38 @@ void Board::displaySFML() {
             }
         }
 
+        //Draw the bugs
+        for(auto bug : bugs){
+            if(!bug->alive) continue;
+
+            sf::Sprite sprite;
+            if(dynamic_cast<Hopper*>(bug)){
+                sprite.setTexture(hopperTexture);
+            }else if(dynamic_cast<SpiralBug*>(bug)){
+                sprite.setTexture(spiralTexture);
+            }else{
+                sprite.setTexture(crawlerTexture);
+            }
+
+            sprite.setScale(
+                    (cellSize - cellGap) / sprite.getLocalBounds().width,
+                    (cellSize - cellGap) / sprite.getLocalBounds().height
+            );
+
+            sprite.setPosition(bug->position.x * cellSize, bug->position.y * cellSize);
+            window.draw(sprite);
+        }
+
         window.display();
+    }
+}
+
+void Board::moveSelectedBug(Direction dir) {
+    for (auto& bug : bugs) {
+        if (bug->alive) {
+            bug->direction = dir;
+            bug->move();
+            break;
+        }
     }
 }

@@ -29,6 +29,8 @@ public:
     void tapBoardFight();
     void runSimulation();
     void displaySFML();
+    void moveSelectedBug(Direction dir);
+
 
 
     vector<BugInfo> getBugSnapShots() const;
