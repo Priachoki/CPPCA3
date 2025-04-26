@@ -13,6 +13,7 @@
 #include <thread>
 #include <chrono>
 #include "Hopper.h"
+#include "SpiralBug.h"
 
 
 using namespace std;
@@ -62,6 +63,11 @@ void Board::initializeBoard(const string &filename) {
             Direction dir = static_cast<Direction>(dirInt);
             Bug* hopper = new Hopper(id, pos, dir, size, hopLength);
             bugs.push_back(hopper);
+        }else if(bugType == 'S'){
+            Position pos {x,y};
+            Direction dir = static_cast<Direction>(dirInt);
+            Bug* spiralBug = new SpiralBug(id, pos, dir, size);
+            bugs.push_back(spiralBug);
         }
     }
     // we then close the file when done.
@@ -77,6 +83,12 @@ void Board::displayBugs() const{
                 << toString(hopper->direction) << " "
                 << hopper->getHopLength() << " "
                 << (hopper->alive ? "Alive" : "Dead") << endl;
+        }else if(auto spiral = dynamic_cast<SpiralBug*>(bug)){
+            cout <<spiral->id << "Spiral"
+                 <<spiral->position << " "
+                 <<spiral->size << " "
+                 << toString(spiral->direction)<< " "
+                 <<(spiral->alive ? "Alive" : "Dead") << endl;
         }else {
             cout << bug->id << "Crawler"
                  <<bug->position << " "
@@ -255,6 +267,8 @@ vector<BugInfo> Board::getBugSnapShots() const {
         if(auto hopper = dynamic_cast<Hopper*>(bug)){
             bugInfo.type = "Hopper";
             bugInfo.hopLength = hopper->getHopLength();
+        }else if (auto spiral = dynamic_cast<SpiralBug*>(bug)) {
+            bugInfo.type = "SpiralBug";
         } else{
             bugInfo.type = "Crawler";
         }

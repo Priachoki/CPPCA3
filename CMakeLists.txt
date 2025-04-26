@@ -12,4 +12,6 @@ add_executable(CPPCA3 main.cpp
         Bug.cpp
         Hopper.h
         Hopper.cpp
+        SpiralBug.h
+        SpiralBug.cpp
 )
