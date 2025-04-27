@@ -321,12 +321,19 @@ void Board::runSimulation(){
                 lastAlive = bug;
             }
         }
-        if(aliveCount <= 1){
-            if(lastAlive){
-                cout<<"Bug "<<lastAlive->id<<"is the last Bug standing!!!!" <<endl;
-            }else{
+        if (aliveCount <= 1) {
+            if (lastAlive) {
+                cout<<"Bug "<<lastAlive->id<<" is the last Bug standing!!!!" <<endl;
+            } else {
                 cout<<"All bugs are dead. None survived!"<<endl;
-            }break;
+            }
+
+            cout << "Simulation finished. Returning to main menu...\n";
+            cout << "Press Enter to continue...";
+            cin.clear();
+            cin.ignore();
+            cin.get();
+            break;
         }
     }
 }

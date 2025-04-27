@@ -95,10 +95,7 @@ int main() {
             }
         }else if (choice == 8) {
             //Feature 6 - Write the life history of all bugs to a text file called “bugs_life_history_date_time.out”
-            //write bug timestamped file
-            time_t now = time(nullptr);
-            char filename[100];
-            strftime(filename, sizeof(filename), "bugs_life_history_%Y-%m-%d_%H-%M-%S.out", localtime(&now));
+            string filename = "bugs_life_history.out";
 
             ofstream outfile(filename);
             if(!outfile){
@@ -115,6 +112,19 @@ int main() {
                 }
                 outfile << " "<< (bug.alive ? "Alive!" : "Dead") << endl;
             }
+            if (board.getSuperBug() && board.getSuperBug()->path.size() > 0) {
+                outfile << board.getSuperBug()->id << " SuperBug Path: ";
+
+                for (auto it = board.getSuperBug()->path.begin(); it != board.getSuperBug()->path.end(); ++it) {
+                    outfile << *it;
+                    if (next(it) != board.getSuperBug()->path.end()) {
+                        outfile << ",";
+                    }
+                }
+
+                outfile << " " << (board.getSuperBug()->alive ? "Alive!" : "Dead") << endl;
+            }
+
             cout << "Bug life history saved to file: " << filename << endl;
             cout << "Exiting program.\n";
             return 0;

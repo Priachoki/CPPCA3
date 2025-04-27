@@ -37,9 +37,12 @@ public:
     void createSuperBug();
 
 
-
+    SuperBug* getSuperBug() const {
+        return superBug;
+    }
     vector<BugInfo> getBugSnapShots() const;
     list<Position> getBugPathById(int id) const;
+
 
 
 
