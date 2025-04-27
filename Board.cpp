@@ -160,6 +160,14 @@ void Board::handleCollisions() {
         }
     }
 
+    if (superBug && superBug->alive) {
+        int x = superBug->position.x;
+        int y = superBug->position.y;
+        if (x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE) {
+            grid[{x, y}].push_back(superBug);
+        }
+    }
+
     for (auto& cellEntry : grid) {
         std::vector<Bug*>& cellBugs = cellEntry.second;
         if (cellBugs.size() > 1) {
@@ -208,22 +216,11 @@ void Board::tapBoardFight() {
         if (bug->alive) {
             bug->move();
         }
-
-
-    for (auto &bug : bugs) {
-        if (bug->alive && bug->position.x == superBug->position.x && bug->position.y == superBug->position.y) {
-            if (superBug->size > bug->size) {
-                superBug->size += bug->size;
-                bug->alive = false;
-                cout << "SuperBug ate bug " << bug->id << "!\n";
-            } else {
-                superBug->alive = false;
-                cout << "SuperBug was defeated by bug " << bug->id << "!\n";
-            }
-            break; // stop checking after one fight
-        }
     }
-}
+
+    if (superBug && superBug->alive) {
+        superBug->move();
+    }
     handleCollisions();
 }
 
@@ -340,6 +337,9 @@ void Board::displaySFML() {
     const int cellSize = 80;
     const int cellGap = 4;
 
+    bool simulationRunning = false;
+    sf::Clock simulationClock;
+
     sf::RenderWindow window(sf::VideoMode(boardSize * cellSize, boardSize * cellSize), "Bug Board");
 
     //Load the images
@@ -375,6 +375,10 @@ void Board::displaySFML() {
                     moveSuperBug(Direction::West);
                 } else if (event.key.code == sf::Keyboard::Right) {
                     moveSuperBug(Direction::East);
+                } else if (event.key.code == sf::Keyboard::S) {
+                    simulationRunning = true;
+                    simulationClock.restart();
+                    cout << "Simulation started (auto tap every second)!" << endl;
                 }
         }
     }
@@ -424,6 +428,42 @@ void Board::displaySFML() {
             sprite.setPosition(superBug->position.x * cellSize, superBug->position.y * cellSize);
             window.draw(sprite);
         }
+
+        if (simulationRunning && simulationClock.getElapsedTime().asSeconds() >= 0.25f) {
+            tapBoardFight();
+            simulationClock.restart();
+
+            int aliveCount = 0;
+            Bug* lastAliveBug = nullptr;
+            bool isSuperBugAlive = false;
+
+            for (auto bug : bugs) {
+                if (bug->alive) {
+                    aliveCount++;
+                    lastAliveBug = bug;
+                }
+            }
+
+            if (superBug && superBug->alive) {
+                aliveCount++;
+                isSuperBugAlive = true;
+            }
+
+            if (aliveCount <= 1) {
+                simulationRunning = false;
+
+                if (aliveCount == 1) {
+                    if (isSuperBugAlive) {
+                        cout << "Bug " << superBug->id << " is the last Bug standing!" << endl;
+                    } else if (lastAliveBug) {
+                        cout << "Bug " << lastAliveBug->id << " is the last Bug standing!" << endl;
+                    }
+                } else {
+                    cout << "All bugs are dead. None survived!" << endl;
+                }
+            }
+        }
+
 
         window.display();
     }
