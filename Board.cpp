@@ -207,7 +207,7 @@ void Board::handleCollisions() {
                     cout << " Bug "<<bug->id;
                 }
             }
-            cout<<endl;
+            cout<<" and it's new size is "<< winner->size <<endl;
         }
     }
 }
