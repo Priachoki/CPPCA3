@@ -208,7 +208,22 @@ void Board::tapBoardFight() {
         if (bug->alive) {
             bug->move();
         }
+
+
+    for (auto &bug : bugs) {
+        if (bug->alive && bug->position.x == superBug->position.x && bug->position.y == superBug->position.y) {
+            if (superBug->size > bug->size) {
+                superBug->size += bug->size;
+                bug->alive = false;
+                cout << "SuperBug ate bug " << bug->id << "!\n";
+            } else {
+                superBug->alive = false;
+                cout << "SuperBug was defeated by bug " << bug->id << "!\n";
+            }
+            break; // stop checking after one fight
+        }
     }
+}
     handleCollisions();
 }
 
